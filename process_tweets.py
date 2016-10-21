@@ -81,16 +81,17 @@ def generate_features(DF):
     features.drop(labels=['tweet'], axis=1, inplace=True) #drop the original tweet text
     
     return features
-def write_output(DF, filename):
+def write_output(DF, infilename, outfn='tweet_features.csv'):
     try:
-        input_file_path = os.path.dirname(os.path.abspath(filename))
-        output_filename = input_file_path + '/' + 'tweet_features.csv'
+        input_file_path = os.path.dirname(os.path.abspath(infilename))
+        output_filename = input_file_path + '/' + outfn
         DF.to_csv(output_filename)
     except IOError, e:
         print 'Unable to write'
 
 fn = sys.argv[1] #read in the filename from the command line
 tweets = preprocess_data(filename=fn)
+write_output(tweets, infilename=fn, outfn='tweets.csv')
 features = generate_features(tweets)
-write_output(features, fn)
+write_output(features, fn, 'tweet_features.csv')
 
